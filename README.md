@@ -1,6 +1,6 @@
 # OptimizationUtils
 
-A plugin that allows you to dynamically change mobcap and performance settings without a server restart!
+A minecraft plugin that allows you to dynamically change mobcap and performance settings without a server restart!
 
 ## Requirements
 
