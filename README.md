@@ -7,6 +7,9 @@ A plugin that allows you to dynamically change mobcap and performance settings w
 - Paper 1.21+ (older versions may not work. Pull requests are appreciated!)
 - Java 21+
 
+## Downloads
+You can download the plugin from a [Releases](https://github.com/EpicPlayerA10/OptimizationUtils/releases/latest) tab by clicking on a `OptimizationUtils-x.x.x.jar`
+
 ## Commands
 
 Base command: `/optimizationutils` (aliases: `/ou`, `/opt`)
