@@ -27,6 +27,8 @@ dependencies {
     paperweight.paperDevBundle("1.21.1-R0.1-SNAPSHOT")
 
     implementation "co.aikar:acf-paper:0.5.1-SNAPSHOT"
+
+    implementation "org.bstats:bstats-bukkit:3.0.2"
 }
 
 tasks.assemble {
@@ -37,6 +39,7 @@ tasks.assemble {
 shadowJar {
     relocate("co.aikar.commands", "com.epicplayera10.optimizationutils.libs.acf")
     relocate("co.aikar.locales", "com.epicplayera10.optimizationutils.libs.locales")
+    relocate("org.bstats", "com.epicplayera10.optimizationutils.libs.org.bstats")
 }
 
 def targetJavaVersion = 21
