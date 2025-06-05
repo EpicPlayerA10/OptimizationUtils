@@ -1,0 +1,5 @@
+name: OptimizationUtils
+version: '${version}'
+main: com.epicplayera10.optimizationutils.OptimizationUtils
+api-version: '1.21'
+authors: [EpicPlayerA10]
