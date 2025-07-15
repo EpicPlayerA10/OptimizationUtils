@@ -16,11 +16,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.SpawnCategory;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 
 @CommandAlias("optimizationutils|ou|opt")
 @CommandPermission("optimizationutils.admin")
@@ -87,5 +92,33 @@ public class OptimizationUtilsCommand extends BaseCommand {
         }
 
         sender.sendMessage(Component.text("Successfully set ticks per spawn for " + spawnCategory.name() + " to " + ticks + " for all worlds.").color(NamedTextColor.GREEN));
+    }
+
+    @Subcommand("killanimalsoutofrange")
+    @Description("Kills animals that are out of range of players in the world")
+    public void killAnimalsOutOfRange(Player player, int range) {
+        World world = player.getWorld();
+
+        Bukkit.getScheduler().runTask(OptimizationUtils.instance(), () -> {
+            Collection<Animals> toRemove = world.getEntitiesByClass(Animals.class);
+
+            for (Player onlinePlayer : world.getPlayers()) {
+                toRemove.removeIf(entity -> entity.getLocation().distance(onlinePlayer.getLocation()) <= range);
+            }
+
+            for (Animals animal : toRemove) {
+                animal.remove();
+            }
+
+            player.sendMessage(Component.text("Killed " + toRemove.size() + " animals out of range.").color(NamedTextColor.GREEN));
+        });
+    }
+
+    @Subcommand("reload")
+    @Description("Reloads the configuration")
+    public void reload(CommandSender sender) {
+        OptimizationUtils.instance().reloadConfiguration();
+
+        sender.sendMessage(Component.text("Configuration reloaded successfully.").color(NamedTextColor.GREEN));
     }
 }

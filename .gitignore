@@ -48,4 +48,5 @@ gradle-app.setting
 .classpath
 
 .idea
+bin
 

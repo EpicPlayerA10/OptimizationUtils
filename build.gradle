@@ -18,6 +18,9 @@ repositories {
         url = "https://oss.sonatype.org/content/groups/public/"
     }
 
+    // Okaeri Config
+    maven { url 'https://storehouse.okaeri.eu/repository/maven-public/' }
+
     // ACF
     maven { url = "https://repo.aikar.co/content/groups/aikar/" }
 }
@@ -28,6 +31,12 @@ dependencies {
 
     implementation "co.aikar:acf-paper:0.5.1-SNAPSHOT"
 
+    implementation 'eu.okaeri:okaeri-configs-yaml-bukkit:5.0.8'
+    implementation 'eu.okaeri:okaeri-configs-serdes-bukkit:5.0.8'
+    implementation 'eu.okaeri:okaeri-configs-serdes-commons:5.0.8'
+    implementation 'eu.okaeri:okaeri-configs-validator-okaeri:5.0.8'
+    implementation 'eu.okaeri:okaeri-placeholders-bukkit:5.1.1'
+
     implementation "org.bstats:bstats-bukkit:3.0.2"
 }
 
@@ -37,8 +46,11 @@ tasks.assemble {
 }
 
 shadowJar {
+    relocate("eu.okaeri", "com.epicplayera10.optimizationutils.libs.eu.okaeri")
+
     relocate("co.aikar.commands", "com.epicplayera10.optimizationutils.libs.acf")
     relocate("co.aikar.locales", "com.epicplayera10.optimizationutils.libs.locales")
+
     relocate("org.bstats", "com.epicplayera10.optimizationutils.libs.org.bstats")
 }
 

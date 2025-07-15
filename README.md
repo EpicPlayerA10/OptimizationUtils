@@ -1,7 +1,6 @@
 # OptimizationUtils
 
-A minecraft plugin that allows you to dynamically change mobcap and performance settings without a server restart!
-Useful when there are already hundreds of players on your server, and you don't want to kick them all just to adjust your mobcap settings.
+A minecraft plugin with some useful optimization utils (see below).
 
 ## Requirements
 
@@ -11,14 +10,24 @@ Useful when there are already hundreds of players on your server, and you don't 
 ## Downloads
 You can download the plugin from a [Releases](https://github.com/EpicPlayerA10/OptimizationUtils/releases/latest) tab by clicking on a `OptimizationUtils-x.x.x.jar`
 
+## Features
+
+- **Automatic Mobcap** - Automatically prevents mob spawning when server performance drops below configured thresholds (based on MSPT) (see config).
+- **Dynamically set simulation distance** - Automatically sets simulation distance for all worlds with proper despawn range adjustments following Paper optimization guidelines
+- **Advanced Mob Spawn Control** - Configure mob spawn limits and spawn frequency for different categories (MONSTER, ANIMAL, etc.)
+- **Chunk Entity Analysis** - Analyze loaded chunks to identify areas with the highest entity concentrations (shows top 10 chunks)
+- **Animal Out of Range Cleanup** - Remove animals that are outside specified range from players to reduce server load
+
 ## Commands
 
 Base command: `/optimizationutils` (aliases: `/ou`, `/opt`)
 
+- `/ou reload` - Reloads the plugin configuration.
 - `/ou setsimulationdistance <distance>` - Set simulation distance for all worlds. This also changes spigot and paper configs according to https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#despawn-ranges-notes
 - `/ou setspawnlimit <category> <limit>` - Set mob spawn limit (MONSTER, ANIMAL, etc.). Equivalent to `spawn-limits` in `bukkit.yml`. [(ref)](https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#spawn-limits)
 - `/ou setticksperspawn <category> <ticks>` - Set mob spawn frequency. Equivalent to `ticks-per` in `bukkit.yml`. [(ref)](https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#ticks-per)
 - `/ou analyzechunks` - Shows in which chunk are the most entities.
+- `/ou killAnimalsOutOfRange <range>` - Kills all animals that are out of the specified range from the player. This is useful for servers with a lot of animals, as it can help reduce lag.
 
 All these commands only set the values in memory, they do not change the config files. The changes will be lost on server restart.
 
