@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 
 public class EntityListener implements Listener {
 
@@ -15,8 +16,8 @@ public class EntityListener implements Listener {
 
     @EventHandler
     public void onMobSpawn(PreCreatureSpawnEvent event) {
-        if (shouldAbortMobspawn(event.getSpawnLocation().getWorld(), "[C] ")) {
-            event.setCancelled(true);
+        if (event.getReason() == CreatureSpawnEvent.SpawnReason.NATURAL && shouldAbortMobspawn(event.getSpawnLocation().getWorld(), "[C] ")) {
+            event.setShouldAbortSpawn(true);
         }
     }
 
