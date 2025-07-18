@@ -15,9 +15,7 @@ public class SimulationDistanceManager {
     /**
      * Sets the simulation distance for the given world and updates related configurations.
      */
-    public static void setSimulationDistance(World world, int newSimulationDistance) {
-        world.setSimulationDistance(newSimulationDistance);
-
+    public static void setNMSSimulationDistance(World world, int newSimulationDistance) {
         // Set other values
         // All these calculations come from: https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#despawn-ranges-notes
         int configBasedSimulationDistance = Math.min(newSimulationDistance, 9);

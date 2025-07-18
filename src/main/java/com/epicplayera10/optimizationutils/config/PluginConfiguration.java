@@ -14,6 +14,6 @@ public class PluginConfiguration extends OkaeriConfig {
         public boolean enabled = true;
 
         @Comment("The target margin in milliseconds for the server's average ticks per second (TPS).")
-        public float targetMsptMargin = 5.0f;
+        public float targetMsptMargin = 10.0f;
     }
 }

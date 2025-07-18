@@ -1,5 +1,5 @@
 name: OptimizationUtils
 version: '${version}'
 main: com.epicplayera10.optimizationutils.OptimizationUtils
-api-version: '1.21'
+api-version: '1.16'
 authors: [EpicPlayerA10]

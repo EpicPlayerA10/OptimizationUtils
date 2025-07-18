@@ -17,15 +17,12 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Animals;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.SpawnCategory;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.UUID;
 
 @CommandAlias("optimizationutils|ou|opt")
 @CommandPermission("optimizationutils.admin")
@@ -65,7 +62,12 @@ public class OptimizationUtilsCommand extends BaseCommand {
     @Description("Sets simulation distance for all worlds while respecting despawn ranges")
     public void setSimulationDistance(CommandSender sender, int newSimulationDistance) {
         for (World world : Bukkit.getWorlds()) {
-            SimulationDistanceManager.setSimulationDistance(world, newSimulationDistance);
+            world.setSimulationDistance(newSimulationDistance);
+            try {
+                SimulationDistanceManager.setNMSSimulationDistance(world, newSimulationDistance);
+            } catch (NoClassDefFoundError e) {
+                OptimizationUtils.instance().getLogger().warning("Cannot update related configuration using NMS because your server version is not supported.");
+            }
         }
 
         sender.sendMessage(Component.text("Successfully set simulation distance to " + newSimulationDistance + " for all worlds.").color(NamedTextColor.GREEN));
