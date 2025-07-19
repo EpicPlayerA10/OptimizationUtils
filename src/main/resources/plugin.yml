@@ -3,3 +3,5 @@ version: '${version}'
 main: com.epicplayera10.optimizationutils.OptimizationUtils
 api-version: '1.16'
 authors: [EpicPlayerA10]
+website: https://fanth.pl
+description: A minecraft plugin with some useful optimization utils.

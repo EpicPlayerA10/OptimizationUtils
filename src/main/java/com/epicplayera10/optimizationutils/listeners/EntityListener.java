@@ -3,6 +3,7 @@ package com.epicplayera10.optimizationutils.listeners;
 import com.destroystokyo.paper.event.entity.PlayerNaturallySpawnCreaturesEvent;
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import com.epicplayera10.optimizationutils.OptimizationUtils;
+import com.epicplayera10.optimizationutils.manager.CompatibilityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -33,7 +34,7 @@ public class EntityListener implements Listener {
             return false;
         }
 
-        float targetMspt = 1000f / Bukkit.getServer().getServerTickManager().getTickRate();
+        float targetMspt = CompatibilityUtils.getTargetMspt();
         float msptThreshold = targetMspt - OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.targetMsptMargin;
 
         // If server is overloaded, cancel mob spawns

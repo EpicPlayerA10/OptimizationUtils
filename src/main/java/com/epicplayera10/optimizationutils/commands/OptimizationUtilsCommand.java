@@ -98,6 +98,7 @@ public class OptimizationUtilsCommand extends BaseCommand {
 
     @Subcommand("killanimalsoutofrange")
     @Description("Kills animals that are out of range of players in the world")
+    @Syntax("<range>")
     public void killAnimalsOutOfRange(Player player, int range) {
         World world = player.getWorld();
 
