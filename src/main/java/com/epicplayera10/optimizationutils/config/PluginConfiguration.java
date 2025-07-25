@@ -15,5 +15,8 @@ public class PluginConfiguration extends OkaeriConfig {
 
         @Comment("The target margin in milliseconds for the server's average ticks per second (TPS).")
         public float targetMsptMargin = 10.0f;
+
+        @Comment("If dynamic mobcap should also apply to spawners.")
+        public boolean throttleSpawners = true;
     }
 }

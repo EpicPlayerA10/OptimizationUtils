@@ -2,13 +2,16 @@ package com.epicplayera10.optimizationutils.listeners;
 
 import com.destroystokyo.paper.event.entity.PlayerNaturallySpawnCreaturesEvent;
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
+import com.destroystokyo.paper.event.entity.PreSpawnerSpawnEvent;
 import com.epicplayera10.optimizationutils.OptimizationUtils;
 import com.epicplayera10.optimizationutils.manager.CompatibilityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.spawner.Spawner;
 
 public class EntityListener implements Listener {
 
@@ -21,7 +24,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (shouldAbortMobspawn(event.getLocation().getWorld(), "[C] ")) {
+        if (shouldAbortMobspawn(event.getLocation().getWorld(), "[CreatureSpawnEvent] ")) {
             event.setCancelled(true);
         }
     }
@@ -32,15 +35,34 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (shouldAbortMobspawn(event.getSpawnLocation().getWorld(), "[PC] ")) {
+        if (shouldAbortMobspawn(event.getSpawnLocation().getWorld(), "[PreCreatureSpawnEvent] ")) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onNaturalSpawnPickChunks(PlayerNaturallySpawnCreaturesEvent event) {
-        if (shouldAbortMobspawn(event.getPlayer().getWorld(), "[N] ")) {
+        if (shouldAbortMobspawn(event.getPlayer().getWorld(), "[PlayerNaturallySpawnCreaturesEvent] ")) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onSpawnerSpawn(PreSpawnerSpawnEvent event) {
+        if (!OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.throttleSpawners) {
+            return;
+        }
+
+        if (shouldAbortMobspawn(event.getSpawnerLocation().getWorld(), "[PreSpawnerSpawnEvent] ")) {
+            event.setCancelled(true);
+            event.setShouldAbortSpawn(true);
+
+            // If canceled, set spawner delay to 1 tick for spawners to work
+            Bukkit.getScheduler().runTask(OptimizationUtils.instance(), () -> {
+                Block block = event.getSpawnerLocation().getBlock();
+                Spawner spawner = (Spawner) block.getState();
+                spawner.setDelay(1);
+            });
         }
     }
 
