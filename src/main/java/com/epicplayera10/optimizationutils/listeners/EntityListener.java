@@ -16,9 +16,24 @@ public class EntityListener implements Listener {
     private long lastLogTime = -1;
 
     @EventHandler
-    public void onMobSpawn(PreCreatureSpawnEvent event) {
-        if (event.getReason() == CreatureSpawnEvent.SpawnReason.NATURAL && shouldAbortMobspawn(event.getSpawnLocation().getWorld(), "[C] ")) {
-            event.setShouldAbortSpawn(true);
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.NATURAL) {
+            return;
+        }
+
+        if (shouldAbortMobspawn(event.getLocation().getWorld(), "[C] ")) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPreCreatureSpawn(PreCreatureSpawnEvent event) {
+        if (event.getReason() != CreatureSpawnEvent.SpawnReason.NATURAL) {
+            return;
+        }
+
+        if (shouldAbortMobspawn(event.getSpawnLocation().getWorld(), "[PC] ")) {
+            event.setCancelled(true);
         }
     }
 
