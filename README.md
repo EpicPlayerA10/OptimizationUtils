@@ -27,7 +27,7 @@ Base command: `/optimizationutils` (aliases: `/ou`, `/opt`)
 - `/ou setspawnlimit <category> <limit>` - Set mob spawn limit (MONSTER, ANIMAL, etc.). Equivalent to `spawn-limits` in `bukkit.yml`. [(ref)](https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#spawn-limits)
 - `/ou setticksperspawn <category> <ticks>` - Set mob spawn frequency. Equivalent to `ticks-per` in `bukkit.yml`. [(ref)](https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#ticks-per)
 - `/ou analyzechunks` - Shows in which chunk are the most entities.
-- `/ou killanimalsoutofrange <range>` - Kills all animals that are out of the specified range from the player. This is useful for servers with a lot of animals, as it can help reduce lag.
+- `/ou killoutofrange <entity type> <range>` - Kills specified entities that are out of the given range from the player. This is useful for servers with a lot of entities, as it can help reduce lag.
 
 All these commands only set the values in memory, they do not change the config files. The changes will be lost on server restart.
 

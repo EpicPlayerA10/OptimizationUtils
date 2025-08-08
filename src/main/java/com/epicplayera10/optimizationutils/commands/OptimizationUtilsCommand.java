@@ -17,12 +17,17 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Animals;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.SpawnCategory;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @CommandAlias("optimizationutils|ou|opt")
 @CommandPermission("optimizationutils.admin")
@@ -96,24 +101,25 @@ public class OptimizationUtilsCommand extends BaseCommand {
         sender.sendMessage(Component.text("Successfully set ticks per spawn for " + spawnCategory.name() + " to " + ticks + " for all worlds.").color(NamedTextColor.GREEN));
     }
 
-    @Subcommand("killanimalsoutofrange")
-    @Description("Kills animals that are out of range of players in the world")
-    @Syntax("<range>")
-    public void killAnimalsOutOfRange(Player player, int range) {
+    @Subcommand("killoutofrange")
+    @Description("Kills entities that are out of range of players in the world")
+    public void killOutOfRange(Player player, EntityType entityType, int range) {
         World world = player.getWorld();
 
         Bukkit.getScheduler().runTask(OptimizationUtils.instance(), () -> {
-            Collection<Animals> toRemove = world.getEntitiesByClass(Animals.class);
+            List<Entity> toRemove = world.getEntities().stream()
+                .filter(entity -> entity.getType() == entityType)
+                .collect(Collectors.toCollection(ArrayList::new));
 
             for (Player onlinePlayer : world.getPlayers()) {
                 toRemove.removeIf(entity -> entity.getLocation().distance(onlinePlayer.getLocation()) <= range);
             }
 
-            for (Animals animal : toRemove) {
-                animal.remove();
+            for (Entity entity : toRemove) {
+                entity.remove();
             }
 
-            player.sendMessage(Component.text("Killed " + toRemove.size() + " animals out of range.").color(NamedTextColor.GREEN));
+            player.sendMessage(Component.text("Killed " + toRemove.size() + " entities out of range.").color(NamedTextColor.GREEN));
         });
     }
 
