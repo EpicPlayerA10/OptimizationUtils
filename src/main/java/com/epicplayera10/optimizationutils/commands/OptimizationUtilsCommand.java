@@ -123,6 +123,27 @@ public class OptimizationUtilsCommand extends BaseCommand {
         });
     }
 
+    @Subcommand("killanimalsoutofrange")
+    @Description("Kills animals that are out of range of players in the world")
+    @Syntax("<range>")
+    public void killAnimalsOutOfRange(Player player, int range) {
+        World world = player.getWorld();
+
+        Bukkit.getScheduler().runTask(OptimizationUtils.instance(), () -> {
+            Collection<Animals> toRemove = world.getEntitiesByClass(Animals.class);
+
+            for (Player onlinePlayer : world.getPlayers()) {
+                toRemove.removeIf(entity -> entity.getLocation().distance(onlinePlayer.getLocation()) <= range);
+            }
+
+            for (Animals animal : toRemove) {
+                animal.remove();
+            }
+
+            player.sendMessage(Component.text("Killed " + toRemove.size() + " animals out of range.").color(NamedTextColor.GREEN));
+        });
+    }
+
     @Subcommand("reload")
     @Description("Reloads the configuration")
     public void reload(CommandSender sender) {
