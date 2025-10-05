@@ -6,7 +6,6 @@ import com.destroystokyo.paper.event.entity.PreSpawnerSpawnEvent;
 import com.epicplayera10.optimizationutils.OptimizationUtils;
 import com.epicplayera10.optimizationutils.manager.ThrottleUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,10 +20,10 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (ThrottleUtils.shouldAbortMobspawn(
+        if (ThrottleUtils.shouldThrottle(
             event.getLocation().getWorld(),
             OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.msptThreshold,
-            "[CreatureSpawnEvent] "
+            "CreatureSpawnEvent"
         )) {
             event.setCancelled(true);
         }
@@ -36,14 +35,14 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (ThrottleUtils.shouldAbortMobspawn(event.getSpawnLocation().getWorld(), OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.msptThreshold, "[PreCreatureSpawnEvent] ")) {
+        if (ThrottleUtils.shouldThrottle(event.getSpawnLocation().getWorld(), OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.msptThreshold, "PreCreatureSpawnEvent")) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onNaturalSpawnPickChunks(PlayerNaturallySpawnCreaturesEvent event) {
-        if (ThrottleUtils.shouldAbortMobspawn(event.getPlayer().getWorld(), OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.msptThreshold, "[PlayerNaturallySpawnCreaturesEvent] ")) {
+        if (ThrottleUtils.shouldThrottle(event.getPlayer().getWorld(), OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.msptThreshold, "PlayerNaturallySpawnCreaturesEvent")) {
             event.setCancelled(true);
         }
     }
@@ -54,7 +53,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (ThrottleUtils.shouldAbortMobspawn(event.getSpawnerLocation().getWorld(), OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.msptThreshold, "[PreSpawnerSpawnEvent] ")) {
+        if (ThrottleUtils.shouldThrottle(event.getSpawnerLocation().getWorld(), OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.msptThreshold, "PreSpawnerSpawnEvent")) {
             event.setCancelled(true);
             event.setShouldAbortSpawn(true);
 

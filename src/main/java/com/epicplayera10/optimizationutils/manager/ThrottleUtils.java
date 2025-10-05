@@ -8,7 +8,7 @@ public class ThrottleUtils {
     // Avoid spamming logs
     private static long lastLogTime = -1;
 
-    public static boolean shouldAbortMobspawn(World world, float msptThreshold, String prefix) {
+    public static boolean shouldThrottle(World world, float msptThreshold, String action) {
         if (!OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.enabled) {
             return false;
         }
@@ -17,7 +17,7 @@ public class ThrottleUtils {
         if (Bukkit.getServer().getAverageTickTime() > msptThreshold) {
             if (lastLogTime == -1 || System.currentTimeMillis() - lastLogTime > 10000) { // Log every 10 seconds
                 lastLogTime = System.currentTimeMillis();
-                OptimizationUtils.instance().getLogger().info(prefix + "Server is overloaded, aborting mob spawn. Entities count: " + world.getEntityCount());
+                OptimizationUtils.instance().getLogger().info("Server is overloaded, throttling " + action + ". Entities count: " + world.getEntityCount());
             }
 
             return true;

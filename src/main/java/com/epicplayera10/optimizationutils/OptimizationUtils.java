@@ -44,16 +44,22 @@ public final class OptimizationUtils extends JavaPlugin {
             if (!this.pluginConfiguration().dynamicRandomTickSpeed.enabled) return;
 
             for (World world : Bukkit.getWorlds()) {
-                if (ThrottleUtils.shouldAbortMobspawn(world, this.pluginConfiguration().dynamicRandomTickSpeed.msptThreshold, "[RandomTickSpeed] ")) {
+                if (ThrottleUtils.shouldThrottle(world, this.pluginConfiguration().dynamicRandomTickSpeed.msptThreshold, "RandomTickSpeed")) {
                     // Store original randomtickspeed if not already stored
                     int currentRandomTickSpeed = world.getGameRuleValue(GameRule.RANDOM_TICK_SPEED);
 
                     if (!this.dataConfiguration().originalRandomTickSpeeds.containsKey(world.getName())) {
+                        if (this.pluginConfiguration().debug) {
+                            this.getLogger().info("Storing original random tick speed for world " + world.getName() + ": " + currentRandomTickSpeed);
+                        }
                         this.dataConfiguration().originalRandomTickSpeeds.put(world.getName(), currentRandomTickSpeed);
                         this.dataConfiguration().save();
                     } else {
                         if (currentRandomTickSpeed != 0) {
                             // Update in case it was changed manually
+                            if (this.pluginConfiguration().debug) {
+                                this.getLogger().info("Updating original random tick speed for world " + world.getName() + ": " + currentRandomTickSpeed);
+                            }
                             this.dataConfiguration().originalRandomTickSpeeds.put(world.getName(), currentRandomTickSpeed);
                             this.dataConfiguration().save();
                         }
@@ -64,6 +70,9 @@ public final class OptimizationUtils extends JavaPlugin {
                 } else {
                     // Restore original random tick speed if it was changed
                     if (this.dataConfiguration().originalRandomTickSpeeds.containsKey(world.getName())) {
+                        if (this.pluginConfiguration().debug) {
+                            this.getLogger().info("Restoring original random tick speed for world " + world.getName() + ": " + this.dataConfiguration().originalRandomTickSpeeds.get(world.getName()));
+                        }
                         // Restore
                         int originalRandomTickSpeed = this.dataConfiguration().originalRandomTickSpeeds.get(world.getName());
                         world.setGameRule(GameRule.RANDOM_TICK_SPEED, originalRandomTickSpeed);
