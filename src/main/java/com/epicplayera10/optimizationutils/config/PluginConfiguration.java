@@ -13,10 +13,20 @@ public class PluginConfiguration extends OkaeriConfig {
     public static class DynamicMobcap extends OkaeriConfig {
         public boolean enabled = true;
 
-        @Comment("The target margin in milliseconds for the server's average ticks per second (TPS).")
-        public float targetMsptMargin = 15.0f;
+        @Comment("The target MSPT in milliseconds when mobcap should be throttled.")
+        public float msptThreshold = 35.0f;
 
         @Comment("If dynamic mobcap should also apply to spawners.")
         public boolean throttleSpawners = false;
+    }
+
+    @Comment("This feature allows the plugin to dynamically turn on or off random tick speed.")
+    public DynamicRandomTickSpeed dynamicRandomTickSpeed = new DynamicRandomTickSpeed();
+
+    public static class DynamicRandomTickSpeed extends OkaeriConfig {
+        public boolean enabled = true;
+
+        @Comment("The target MSPT in milliseconds when random tick speed should be throttled.")
+        public float msptThreshold = 35.0f;
     }
 }
