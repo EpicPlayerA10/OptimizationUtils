@@ -32,7 +32,7 @@ public class PluginConfiguration extends OkaeriConfig {
     public DynamicRandomTickSpeed dynamicRandomTickSpeed = new DynamicRandomTickSpeed();
 
     public static class DynamicRandomTickSpeed extends OkaeriConfig {
-        public boolean enabled = true;
+        public boolean enabled = false;
 
         @Comment("")
         @Comment("The target MSPT in milliseconds when random tick speed should be throttled.")
