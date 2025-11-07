@@ -144,6 +144,16 @@ public class OptimizationUtilsCommand extends BaseCommand {
         });
     }
 
+    @Subcommand("setviewdistance")
+    @Syntax("<new view distance>")
+    @Description("Sets view distance for all worlds")
+    public void setViewDistance(CommandSender sender, int newViewDistance) {
+        for (World world : Bukkit.getWorlds()) {
+            world.setViewDistance(newViewDistance);
+        }
+        sender.sendMessage(Component.text("Successfully set view distance to " + newViewDistance + " for all worlds.").color(NamedTextColor.GREEN));
+    }
+
     @Subcommand("reload")
     @Description("Reloads the configuration")
     public void reload(CommandSender sender) {
