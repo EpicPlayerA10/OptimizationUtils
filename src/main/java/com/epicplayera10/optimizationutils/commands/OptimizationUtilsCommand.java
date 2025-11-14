@@ -6,8 +6,10 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.HelpCommand;
+import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import com.epicplayera10.optimizationutils.OptimizationUtils;
 import com.epicplayera10.optimizationutils.manager.SimulationDistanceManager;
 import net.kyori.adventure.text.Component;
@@ -145,13 +147,18 @@ public class OptimizationUtilsCommand extends BaseCommand {
     }
 
     @Subcommand("setviewdistance")
-    @Syntax("<new view distance>")
+    @Syntax("<new view distance> [player]")
     @Description("Sets view distance for all worlds")
-    public void setViewDistance(CommandSender sender, int newViewDistance) {
-        for (World world : Bukkit.getWorlds()) {
-            world.setViewDistance(newViewDistance);
+    public void setViewDistance(CommandSender sender, int newViewDistance, @Optional OnlinePlayer target) {
+        if (target != null) {
+            target.player.setViewDistance(newViewDistance);
+            sender.sendMessage(Component.text("Successfully set view distance to " + newViewDistance + " for " + target.player.getName()).color(NamedTextColor.GREEN));
+        } else {
+            for (World world : Bukkit.getWorlds()) {
+                world.setViewDistance(newViewDistance);
+            }
+            sender.sendMessage(Component.text("Successfully set view distance to " + newViewDistance + " for all worlds.").color(NamedTextColor.GREEN));
         }
-        sender.sendMessage(Component.text("Successfully set view distance to " + newViewDistance + " for all worlds.").color(NamedTextColor.GREEN));
     }
 
     @Subcommand("reload")
