@@ -1,3 +1,5 @@
+<a href="https://modrinth.com/plugin/optimizationutils"><img alt="modrinth" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_vector.svg"></a>
+
 # OptimizationUtils
 
 A minecraft plugin with some useful optimization utils (see below).
@@ -7,8 +9,8 @@ A minecraft plugin with some useful optimization utils (see below).
 - Paper 1.21+ (older versions may not work. Pull requests are appreciated!)
 - Java 21+
 
-## Downloads
-You can download the plugin from a [Releases](https://github.com/EpicPlayerA10/OptimizationUtils/releases/latest) tab by clicking on a `OptimizationUtils-x.x.x.jar`
+## Installation
+- [Modrinth](https://modrinth.com/plugin/ia-edit)
 
 ## Features
 
