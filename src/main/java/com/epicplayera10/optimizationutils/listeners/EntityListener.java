@@ -16,6 +16,10 @@ public class EntityListener implements Listener {
 
     @EventHandler
     public void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (!OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.enabled) {
+            return;
+        }
+
         if (event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.NATURAL) {
             return;
         }
@@ -31,6 +35,10 @@ public class EntityListener implements Listener {
 
     @EventHandler
     public void onPreCreatureSpawn(PreCreatureSpawnEvent event) {
+        if (!OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.enabled) {
+            return;
+        }
+
         if (event.getReason() != CreatureSpawnEvent.SpawnReason.NATURAL) {
             return;
         }
@@ -42,6 +50,10 @@ public class EntityListener implements Listener {
 
     @EventHandler
     public void onNaturalSpawnPickChunks(PlayerNaturallySpawnCreaturesEvent event) {
+        if (!OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.enabled) {
+            return;
+        }
+
         if (ThrottleUtils.shouldThrottle(event.getPlayer().getWorld(), OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.msptThreshold, "PlayerNaturallySpawnCreaturesEvent")) {
             event.setCancelled(true);
         }
@@ -49,7 +61,7 @@ public class EntityListener implements Listener {
 
     @EventHandler
     public void onSpawnerSpawn(PreSpawnerSpawnEvent event) {
-        if (!OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.throttleSpawners) {
+        if (!OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.enabled || !OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.throttleSpawners) {
             return;
         }
 

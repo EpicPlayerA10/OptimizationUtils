@@ -25,6 +25,7 @@ A minecraft plugin with some useful optimization utils (see below).
 Base command: `/optimizationutils` (aliases: `/ou`, `/opt`)
 
 - `/ou reload` - Reloads the plugin configuration.
+- `/ou info` - Displays server and plugin information.
 - `/ou setsimulationdistance <distance>` - Set simulation distance for all worlds. This also changes spigot and paper configs according to https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#despawn-ranges-notes
 - `/ou setviewdistance <distance> [player]` - Set view distance for all worlds or for a specific player.
 - `/ou setspawnlimit <category> <limit>` - Set mob spawn limit (MONSTER, ANIMAL, etc.). Equivalent to `spawn-limits` in `bukkit.yml`. [(ref)](https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#spawn-limits)

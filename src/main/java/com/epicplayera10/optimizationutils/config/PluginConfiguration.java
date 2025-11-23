@@ -1,5 +1,6 @@
 package com.epicplayera10.optimizationutils.config;
 
+import com.epicplayera10.optimizationutils.config.model.MsptCalculationMode;
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.Comment;
 import eu.okaeri.configs.annotation.Header;
@@ -10,6 +11,12 @@ public class PluginConfiguration extends OkaeriConfig {
     @Comment("")
     @Comment("Debug mode for the plugin.")
     public boolean debug = false;
+
+    @Comment("")
+    @Comment("The method used to calculate the MSPT for dynamic features.")
+    @Comment(" - AVERAGE_5S - Uses the average MSPT over the last 5 seconds.")
+    @Comment(" - LAST_TICK - Uses the current MSPT of the last tick.")
+    public MsptCalculationMode msptCalculationMode = MsptCalculationMode.AVERAGE_5S;
 
     @Comment("")
     @Comment("This feature allows the plugin to dynamically adjust the mobcap based on server performance.")

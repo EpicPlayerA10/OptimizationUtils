@@ -168,4 +168,136 @@ public class OptimizationUtilsCommand extends BaseCommand {
 
         sender.sendMessage(Component.text("Configuration reloaded successfully.").color(NamedTextColor.GREEN));
     }
+
+    @Subcommand("info")
+    @Description("Displays server and plugin information.")
+    public void info(CommandSender sender) {
+        Component message = Component.text("=== OptimizationUtils Info ===").color(NamedTextColor.GREEN)
+                .append(Component.newline())
+                .append(Component.newline());
+
+        // View Distance - per world
+        message = message.append(Component.text("View Distance:").color(NamedTextColor.AQUA))
+                .append(Component.newline());
+        for (World world : Bukkit.getWorlds()) {
+            int viewDistance = world.getViewDistance();
+            message = message.append(Component.text("  " + world.getName() + ": " + viewDistance).color(NamedTextColor.WHITE))
+                    .append(Component.newline());
+        }
+        message = message.append(Component.newline());
+
+        // Simulation Distance - per world
+        message = message.append(Component.text("Simulation Distance:").color(NamedTextColor.AQUA))
+                .append(Component.newline());
+        for (World world : Bukkit.getWorlds()) {
+            int simulationDistance = world.getSimulationDistance();
+            message = message.append(Component.text("  " + world.getName() + ": " + simulationDistance).color(NamedTextColor.WHITE))
+                    .append(Component.newline());
+        }
+        message = message.append(Component.newline());
+
+        // Player View Distance - grouping
+        Map<Integer, Long> viewDistanceGroups = Bukkit.getOnlinePlayers().stream()
+                .collect(Collectors.groupingBy(
+                        player -> player.getViewDistance() != 0 ? player.getViewDistance() : player.getWorld().getViewDistance(),
+                        Collectors.counting()
+                ));
+
+        message = message.append(Component.text("Player View Distance:").color(NamedTextColor.AQUA))
+                .append(Component.newline());
+        if (viewDistanceGroups.isEmpty()) {
+            message = message.append(Component.text("  No players online").color(NamedTextColor.GRAY))
+                    .append(Component.newline());
+        } else {
+            List<Map.Entry<Integer, Long>> sortedViewDistanceGroups = viewDistanceGroups.entrySet().stream()
+                    .sorted(Map.Entry.<Integer, Long>comparingByKey().reversed())
+                    .collect(Collectors.toList());
+            for (Map.Entry<Integer, Long> entry : sortedViewDistanceGroups) {
+                message = message.append(Component.text("  " + entry.getKey() + " view distance - " + entry.getValue() + " players").color(NamedTextColor.WHITE))
+                        .append(Component.newline());
+            }
+        }
+        message = message.append(Component.newline());
+
+        // Player Simulation Distance - grouping
+        Map<Integer, Long> simulationDistanceGroups = Bukkit.getOnlinePlayers().stream()
+                .collect(Collectors.groupingBy(
+                        player -> player.getSimulationDistance() != 0 ? player.getSimulationDistance() : player.getWorld().getSimulationDistance(),
+                        Collectors.counting()
+                ));
+
+        message = message.append(Component.text("Player Simulation Distance:").color(NamedTextColor.AQUA))
+                .append(Component.newline());
+        if (simulationDistanceGroups.isEmpty()) {
+            message = message.append(Component.text("  No players online").color(NamedTextColor.GRAY))
+                    .append(Component.newline());
+        } else {
+            List<Map.Entry<Integer, Long>> sortedSimulationDistanceGroups = simulationDistanceGroups.entrySet().stream()
+                    .sorted(Map.Entry.<Integer, Long>comparingByKey().reversed())
+                    .collect(Collectors.toList());
+            for (Map.Entry<Integer, Long> entry : sortedSimulationDistanceGroups) {
+                message = message.append(Component.text("  " + entry.getKey() + " simulation distance - " + entry.getValue() + " players").color(NamedTextColor.WHITE))
+                        .append(Component.newline());
+            }
+        }
+        message = message.append(Component.newline());
+
+        // Entity Count - sum and per world
+        int totalEntities = 0;
+        message = message.append(Component.text("Entity Count:").color(NamedTextColor.AQUA))
+                .append(Component.newline());
+        for (World world : Bukkit.getWorlds()) {
+            int entityCount = world.getEntityCount();
+            totalEntities += entityCount;
+            message = message.append(Component.text("  " + world.getName() + ": " + entityCount).color(NamedTextColor.WHITE))
+                    .append(Component.newline());
+        }
+        message = message.append(Component.text("Total Entities: " + totalEntities).color(NamedTextColor.YELLOW))
+                .append(Component.newline())
+                .append(Component.newline());
+
+        // Loaded Chunks - sum and per world
+        int totalChunks = 0;
+        message = message.append(Component.text("Loaded Chunks:").color(NamedTextColor.AQUA))
+                .append(Component.newline());
+        for (World world : Bukkit.getWorlds()) {
+            int chunkCount = world.getLoadedChunks().length;
+            totalChunks += chunkCount;
+            message = message.append(Component.text("  " + world.getName() + ": " + chunkCount).color(NamedTextColor.WHITE))
+                    .append(Component.newline());
+        }
+        message = message.append(Component.text("Total Loaded Chunks: " + totalChunks).color(NamedTextColor.YELLOW))
+                .append(Component.newline())
+                .append(Component.newline());
+
+        // Random Tick Speed - per world
+        message = message.append(Component.text("Random Tick Speed:").color(NamedTextColor.AQUA))
+                .append(Component.newline());
+        for (World world : Bukkit.getWorlds()) {
+            int randomTickSpeed = world.getGameRuleValue(org.bukkit.GameRule.RANDOM_TICK_SPEED);
+            message = message.append(Component.text("  " + world.getName() + ": " + randomTickSpeed).color(NamedTextColor.WHITE))
+                    .append(Component.newline());
+        }
+        message = message.append(Component.newline());
+
+        // Plugin Configuration Status
+        message = message.append(Component.text("Plugin Configuration:").color(NamedTextColor.AQUA))
+                .append(Component.newline());
+
+        message = message.append(Component.text("  MSPT Calculation Mode: " + OptimizationUtils.instance().pluginConfiguration().msptCalculationMode).color(NamedTextColor.GRAY))
+                .append(Component.newline());
+
+        String dynamicMobcapStatus = OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.enabled
+            ? "Enabled (threshold: " + OptimizationUtils.instance().pluginConfiguration().dynamicMobcap.msptThreshold + "ms)"
+            : "Disabled";
+        message = message.append(Component.text("  Dynamic Mobcap: " + dynamicMobcapStatus).color(NamedTextColor.GRAY))
+                .append(Component.newline());
+
+        String dynamicRandomTickStatus = OptimizationUtils.instance().pluginConfiguration().dynamicRandomTickSpeed.enabled
+            ? "Enabled (threshold: " + OptimizationUtils.instance().pluginConfiguration().dynamicRandomTickSpeed.msptThreshold + "ms)"
+            : "Disabled";
+        message = message.append(Component.text("  Dynamic Random Tick Speed: " + dynamicRandomTickStatus).color(NamedTextColor.GRAY));
+
+        sender.sendMessage(message);
+    }
 }
