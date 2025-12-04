@@ -43,6 +43,6 @@ public class PluginConfiguration extends OkaeriConfig {
 
         @Comment("")
         @Comment("The target MSPT in milliseconds when random tick speed should be throttled.")
-        public float msptThreshold = 35.0f;
+        public float msptThreshold = 45.0f;
     }
 }

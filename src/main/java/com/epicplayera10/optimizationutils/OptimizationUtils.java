@@ -6,7 +6,9 @@ import com.epicplayera10.optimizationutils.config.ConfigurationFactory;
 import com.epicplayera10.optimizationutils.config.DataConfiguration;
 import com.epicplayera10.optimizationutils.config.PluginConfiguration;
 import com.epicplayera10.optimizationutils.listeners.EntityListener;
+import com.epicplayera10.optimizationutils.listeners.UpdateNotifyListener;
 import com.epicplayera10.optimizationutils.manager.ThrottleUtils;
+import com.epicplayera10.optimizationutils.updatechecker.UpdateChecker;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
@@ -19,6 +21,7 @@ public final class OptimizationUtils extends JavaPlugin {
 
     private PluginConfiguration pluginConfiguration;
     private DataConfiguration dataConfiguration;
+    private UpdateChecker updateChecker;
 
     private static OptimizationUtils instance;
 
@@ -35,9 +38,16 @@ public final class OptimizationUtils extends JavaPlugin {
         restoreOriginalRandomTickSpeeds();
 
         Bukkit.getPluginManager().registerEvents(new EntityListener(), this);
+        Bukkit.getPluginManager().registerEvents(new UpdateNotifyListener(), this);
 
         // Plugin startup logic
         registerCommands();
+
+        // Check for updates
+        this.updateChecker = new UpdateChecker();
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            this.updateChecker.checkForUpdates();
+        }, 0L, 24 * 60 * 60 * 20); // Check every 24h
 
         // Dynamic Random Tick Speed Task
         Bukkit.getScheduler().runTaskTimer(this, () -> {
@@ -132,5 +142,9 @@ public final class OptimizationUtils extends JavaPlugin {
     public void reloadConfiguration() {
         this.pluginConfiguration.load();
         this.dataConfiguration.load();
+    }
+
+    public UpdateChecker getUpdateChecker() {
+        return updateChecker;
     }
 }

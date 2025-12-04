@@ -5,3 +5,7 @@ api-version: '1.16'
 authors: [EpicPlayerA10]
 website: https://fanth.pl
 description: A minecraft plugin with some useful optimization utils.
+permissions:
+  optimizationutils.updatechecker:
+    description: Allows players to receive update notifications
+    default: op
