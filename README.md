@@ -28,6 +28,7 @@ Base command: `/optimizationutils` (aliases: `/ou`, `/opt`)
 - `/ou info` - Displays server and plugin information.
 - `/ou setsimulationdistance <distance>` - Set simulation distance for all worlds. This also changes spigot and paper configs according to https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#despawn-ranges-notes
 - `/ou setviewdistance <distance> [player]` - Set view distance for all worlds or for a specific player.
+- `/ou resetviewdistance <player>` - Resets view distance for a player to server default.
 - `/ou setspawnlimit <category> <limit>` - Set mob spawn limit (MONSTER, ANIMAL, etc.). Equivalent to `spawn-limits` in `bukkit.yml`. [(ref)](https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#spawn-limits)
 - `/ou setticksperspawn <category> <ticks>` - Set mob spawn frequency. Equivalent to `ticks-per` in `bukkit.yml`. [(ref)](https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#ticks-per)
 - `/ou analyzechunks` - Shows in which chunk are the most entities.

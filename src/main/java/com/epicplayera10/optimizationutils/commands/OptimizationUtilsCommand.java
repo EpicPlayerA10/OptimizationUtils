@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @CommandAlias("optimizationutils|ou|opt")
@@ -152,6 +153,8 @@ public class OptimizationUtilsCommand extends BaseCommand {
     public void setViewDistance(CommandSender sender, int newViewDistance, @Optional OnlinePlayer target) {
         if (target != null) {
             target.player.setViewDistance(newViewDistance);
+            OptimizationUtils.instance().dataConfiguration().viewDistanceOverrides.put(target.player.getUniqueId(), newViewDistance);
+            OptimizationUtils.instance().dataConfiguration().save();
             sender.sendMessage(Component.text("Successfully set view distance to " + newViewDistance + " for " + target.player.getName()).color(NamedTextColor.GREEN));
         } else {
             for (World world : Bukkit.getWorlds()) {
@@ -159,6 +162,16 @@ public class OptimizationUtilsCommand extends BaseCommand {
             }
             sender.sendMessage(Component.text("Successfully set view distance to " + newViewDistance + " for all worlds.").color(NamedTextColor.GREEN));
         }
+    }
+
+    @Subcommand("resetviewdistance")
+    @Syntax("<player>")
+    @Description("Resets view distance for a player to server default")
+    public void resetViewDistance(CommandSender sender, OnlinePlayer target) {
+        target.player.setViewDistance(-1);
+        OptimizationUtils.instance().dataConfiguration().viewDistanceOverrides.remove(target.player.getUniqueId());
+        OptimizationUtils.instance().dataConfiguration().save();
+        sender.sendMessage(Component.text("Successfully reset view distance for " + target.player.getName()).color(NamedTextColor.GREEN));
     }
 
     @Subcommand("reload")
@@ -214,6 +227,23 @@ public class OptimizationUtilsCommand extends BaseCommand {
                     .collect(Collectors.toList());
             for (Map.Entry<Integer, Long> entry : sortedViewDistanceGroups) {
                 message = message.append(Component.text("  " + entry.getKey() + " view distance - " + entry.getValue() + " players").color(NamedTextColor.WHITE))
+                        .append(Component.newline());
+            }
+        }
+        message = message.append(Component.newline());
+
+        // View Distance Overrides - per player
+        Map<UUID, Integer> viewDistanceOverrides = OptimizationUtils.instance().dataConfiguration().viewDistanceOverrides;
+        message = message.append(Component.text("View Distance Overrides:").color(NamedTextColor.AQUA))
+                .append(Component.newline());
+        if (viewDistanceOverrides.isEmpty()) {
+            message = message.append(Component.text("  No overrides set").color(NamedTextColor.GRAY))
+                    .append(Component.newline());
+        } else {
+            for (Map.Entry<UUID, Integer> entry : viewDistanceOverrides.entrySet()) {
+                Player overridePlayer = Bukkit.getPlayer(entry.getKey());
+                String playerName = overridePlayer != null ? overridePlayer.getName() : entry.getKey().toString();
+                message = message.append(Component.text("  " + playerName + ": " + entry.getValue()).color(NamedTextColor.WHITE))
                         .append(Component.newline());
             }
         }

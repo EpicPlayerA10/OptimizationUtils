@@ -6,6 +6,7 @@ import com.epicplayera10.optimizationutils.config.ConfigurationFactory;
 import com.epicplayera10.optimizationutils.config.DataConfiguration;
 import com.epicplayera10.optimizationutils.config.PluginConfiguration;
 import com.epicplayera10.optimizationutils.listeners.EntityListener;
+import com.epicplayera10.optimizationutils.listeners.PlayerListener;
 import com.epicplayera10.optimizationutils.listeners.UpdateNotifyListener;
 import com.epicplayera10.optimizationutils.manager.ThrottleUtils;
 import com.epicplayera10.optimizationutils.updatechecker.UpdateChecker;
@@ -39,6 +40,7 @@ public final class OptimizationUtils extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new EntityListener(), this);
         Bukkit.getPluginManager().registerEvents(new UpdateNotifyListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 
         // Plugin startup logic
         registerCommands();
