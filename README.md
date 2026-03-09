@@ -47,3 +47,7 @@ You can build the project using IntelliJ IDEA
 ```bash
 gradlew build
 ```
+
+## Stats
+
+![](https://bstats.org/signatures/bukkit/OptimizationUtils.svg)
