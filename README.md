@@ -15,7 +15,7 @@ A minecraft plugin with some useful optimization utils (see below).
 ## Features
 
 - **Automatic Mobcap** - Automatically prevents mob spawning when server performance drops below configured thresholds (based on MSPT) (see config).
-- **Dynamically set simulation distance** - Automatically sets simulation distance for all worlds with proper despawn range adjustments following Paper optimization guidelines
+- **Automatically adjusts mobcaps based on simulation distance** - Automatically adjusts mobcaps based on simulation distance with proper despawn range adjustments following Paper optimization guidelines
 - **Advanced Mob Spawn Control** - Configure mob spawn limits and spawn frequency for different categories (MONSTER, ANIMAL, etc.)
 - **Chunk Entity Analysis** - Analyze loaded chunks to identify areas with the highest entity concentrations (shows top 10 chunks)
 - **Animal Out of Range Cleanup** - Remove animals that are outside specified range from players to reduce server load
