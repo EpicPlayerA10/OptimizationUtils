@@ -11,9 +11,11 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import com.epicplayera10.optimizationutils.OptimizationUtils;
-import com.epicplayera10.optimizationutils.manager.SimulationDistanceManager;
+import com.epicplayera10.optimizationutils.manager.ReflectionUtils;
+import com.epicplayera10.optimizationutils.manager.NMSUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.minecraft.server.level.ServerLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -72,7 +74,7 @@ public class OptimizationUtilsCommand extends BaseCommand {
         for (World world : Bukkit.getWorlds()) {
             world.setSimulationDistance(newSimulationDistance);
             try {
-                SimulationDistanceManager.setNMSSimulationDistance(world, newSimulationDistance);
+                NMSUtils.setNMSSimulationDistance(world, newSimulationDistance);
             } catch (NoClassDefFoundError e) {
                 OptimizationUtils.instance().getLogger().warning("Cannot update related configuration using NMS because your server version is not supported.");
             }
@@ -102,6 +104,24 @@ public class OptimizationUtilsCommand extends BaseCommand {
         }
 
         sender.sendMessage(Component.text("Successfully set ticks per spawn for " + spawnCategory.name() + " to " + ticks + " for all worlds.").color(NamedTextColor.GREEN));
+    }
+
+    @Subcommand("setvillagersensortickrate")
+    public void setVillagerSensorTickRate(CommandSender sender, int ticks) {
+        for (World world : Bukkit.getWorlds()) {
+            NMSUtils.setNMSVillagerSensorTickRate(world, ticks);
+        }
+
+        sender.sendMessage(Component.text("Successfully set villager sensor tick rate to " + ticks + " for all worlds.").color(NamedTextColor.GREEN));
+    }
+
+    @Subcommand("setvillagerbehaviortickrate")
+    public void setVillagerBehaviorTickRate(CommandSender sender, int ticks) {
+        for (World world : Bukkit.getWorlds()) {
+            NMSUtils.setNMSVillagerBehaviorTickRate(world, ticks);
+        }
+
+        sender.sendMessage(Component.text("Successfully set villager behavior tick rate to " + ticks + " for all worlds.").color(NamedTextColor.GREEN));
     }
 
     @Subcommand("killoutofrange")
@@ -306,6 +326,24 @@ public class OptimizationUtilsCommand extends BaseCommand {
         for (World world : Bukkit.getWorlds()) {
             int randomTickSpeed = world.getGameRuleValue(org.bukkit.GameRule.RANDOM_TICK_SPEED);
             message = message.append(Component.text("  " + world.getName() + ": " + randomTickSpeed).color(NamedTextColor.WHITE))
+                    .append(Component.newline());
+        }
+        message = message.append(Component.newline());
+
+        // Villager Tick Rates - per world
+        message = message.append(Component.text("Villager Tick Rates (sensor / behavior):").color(NamedTextColor.AQUA))
+                .append(Component.newline());
+        try {
+            for (World world : Bukkit.getWorlds()) {
+                Integer sensorTickRate = NMSUtils.getNMSVillagerSensorTickRate(world);
+                Integer behaviorTickRate = NMSUtils.getNMSVillagerBehaviorTickRate(world);
+                String sensorText = sensorTickRate != null ? sensorTickRate.toString() : "default";
+                String behaviorText = behaviorTickRate != null ? behaviorTickRate.toString() : "default";
+                message = message.append(Component.text("  " + world.getName() + ": " + sensorText + " / " + behaviorText).color(NamedTextColor.WHITE))
+                        .append(Component.newline());
+            }
+        } catch (NoClassDefFoundError e) {
+            message = message.append(Component.text("  Not supported on this server version").color(NamedTextColor.GRAY))
                     .append(Component.newline());
         }
         message = message.append(Component.newline());

@@ -4,13 +4,14 @@ import io.papermc.paper.configuration.WorldConfiguration;
 import io.papermc.paper.configuration.type.DespawnRange;
 import io.papermc.paper.configuration.type.number.IntOr;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import org.bukkit.World;
 import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.util.OptionalInt;
 
-public class SimulationDistanceManager {
+public class NMSUtils {
 
     /**
      * Sets the simulation distance for the given world and updates related configurations.
@@ -37,5 +38,31 @@ public class SimulationDistanceManager {
         } catch (SerializationException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void setNMSVillagerSensorTickRate(World world, int ticks) {
+        ServerLevel serverLevel = ReflectionUtils.getNMSWorld(world);
+        serverLevel.paperConfig().tickRates.sensor.put(EntityType.VILLAGER, "secondarypoisensor", ticks);
+    }
+
+    public static void setNMSVillagerBehaviorTickRate(World world, int ticks) {
+        ServerLevel serverLevel = ReflectionUtils.getNMSWorld(world);
+        serverLevel.paperConfig().tickRates.sensor.put(EntityType.VILLAGER, "validatenearbypoi", ticks);
+    }
+
+    /**
+     * Returns the villager sensor tick rate for the given world, or null if not set.
+     */
+    public static Integer getNMSVillagerSensorTickRate(World world) {
+        ServerLevel serverLevel = ReflectionUtils.getNMSWorld(world);
+        return serverLevel.paperConfig().tickRates.sensor.get(EntityType.VILLAGER, "secondarypoisensor");
+    }
+
+    /**
+     * Returns the villager behavior tick rate for the given world, or null if not set.
+     */
+    public static Integer getNMSVillagerBehaviorTickRate(World world) {
+        ServerLevel serverLevel = ReflectionUtils.getNMSWorld(world);
+        return serverLevel.paperConfig().tickRates.sensor.get(EntityType.VILLAGER, "validatenearbypoi");
     }
 }
