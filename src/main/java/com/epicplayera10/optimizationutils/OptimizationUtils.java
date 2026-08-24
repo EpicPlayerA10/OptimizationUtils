@@ -8,6 +8,7 @@ import com.epicplayera10.optimizationutils.config.PluginConfiguration;
 import com.epicplayera10.optimizationutils.listeners.EntityListener;
 import com.epicplayera10.optimizationutils.listeners.PlayerListener;
 import com.epicplayera10.optimizationutils.listeners.UpdateNotifyListener;
+import com.epicplayera10.optimizationutils.manager.EntityTickManager;
 import com.epicplayera10.optimizationutils.manager.ThrottleUtils;
 import com.epicplayera10.optimizationutils.updatechecker.UpdateChecker;
 import org.bstats.bukkit.Metrics;
@@ -37,6 +38,8 @@ public final class OptimizationUtils extends JavaPlugin {
 
         // Restore original random tick speeds on enable if server has been stopped incorrectly
         restoreOriginalRandomTickSpeeds();
+
+        EntityTickManager.sync();
 
         Bukkit.getPluginManager().registerEvents(new EntityListener(), this);
         Bukkit.getPluginManager().registerEvents(new UpdateNotifyListener(), this);
@@ -102,6 +105,9 @@ public final class OptimizationUtils extends JavaPlugin {
     public void onDisable() {
         // Restore original random tick speeds on disable
         restoreOriginalRandomTickSpeeds();
+
+        // Give unticked mobs back to the tick list
+        EntityTickManager.disable();
     }
 
     private void restoreOriginalRandomTickSpeeds() {
@@ -144,6 +150,8 @@ public final class OptimizationUtils extends JavaPlugin {
     public void reloadConfiguration() {
         this.pluginConfiguration.load();
         this.dataConfiguration.load();
+
+        EntityTickManager.sync();
     }
 
     public UpdateChecker getUpdateChecker() {

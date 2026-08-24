@@ -11,11 +11,11 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import com.epicplayera10.optimizationutils.OptimizationUtils;
-import com.epicplayera10.optimizationutils.manager.ReflectionUtils;
+import com.epicplayera10.optimizationutils.config.PluginConfiguration;
+import com.epicplayera10.optimizationutils.manager.EntityTickManager;
 import com.epicplayera10.optimizationutils.manager.NMSUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.minecraft.server.level.ServerLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -364,7 +364,14 @@ public class OptimizationUtilsCommand extends BaseCommand {
         String dynamicRandomTickStatus = OptimizationUtils.instance().pluginConfiguration().dynamicRandomTickSpeed.enabled
             ? "Enabled (threshold: " + OptimizationUtils.instance().pluginConfiguration().dynamicRandomTickSpeed.msptThreshold + "ms)"
             : "Disabled";
-        message = message.append(Component.text("  Dynamic Random Tick Speed: " + dynamicRandomTickStatus).color(NamedTextColor.GRAY));
+        message = message.append(Component.text("  Dynamic Random Tick Speed: " + dynamicRandomTickStatus).color(NamedTextColor.GRAY))
+                .append(Component.newline());
+
+        PluginConfiguration.DisableEntityTicking disableEntityTicking = OptimizationUtils.instance().pluginConfiguration().disableEntityTicking;
+        String entityTickingStatus = EntityTickManager.isRunning()
+            ? disableEntityTicking.mode + " for " + disableEntityTicking.filterMode + " " + disableEntityTicking.entities
+            : "Disabled";
+        message = message.append(Component.text("  Disable Entity Ticking: " + entityTickingStatus).color(NamedTextColor.GRAY));
 
         sender.sendMessage(message);
     }

@@ -1,9 +1,14 @@
 package com.epicplayera10.optimizationutils.config;
 
+import com.epicplayera10.optimizationutils.config.model.FilterMode;
 import com.epicplayera10.optimizationutils.config.model.MsptCalculationMode;
+import com.epicplayera10.optimizationutils.config.model.TickingDisableMode;
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.Comment;
 import eu.okaeri.configs.annotation.Header;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Header("A config file for the plugin.")
 @Header("")
@@ -32,6 +37,35 @@ public class PluginConfiguration extends OkaeriConfig {
         @Comment("")
         @Comment("If dynamic mobcap should also apply to spawners.")
         public boolean throttleSpawners = false;
+    }
+
+    @Comment("")
+    @Comment("Stops ticking the selected mobs. They stay in the world but are not ticked by the server (no AI, no movement).")
+    public DisableEntityTicking disableEntityTicking = new DisableEntityTicking();
+
+    public static class DisableEntityTicking extends OkaeriConfig {
+        public boolean enabled = false;
+
+        @Comment("")
+        @Comment("How ticking is disabled.")
+        @Comment(" - ALL_TICKING - removes the mob from the server's entity tick list, so nothing about it is ticked at all.")
+        @Comment("                 Nothing is saved to the mob, everything comes back on its own after a restart.")
+        @Comment(" - BUKKIT_AWARE - uses Bukkit's Mob#setAware, so only the mob's AI is skipped (it still falls, burns, despawns, ...).")
+        @Comment("                  Beware: this is saved to the mob (NoAI), so mobs made unaware by other plugins or commands are restored as aware too.")
+        public TickingDisableMode mode = TickingDisableMode.ALL_TICKING;
+
+        @Comment("")
+        @Comment("How the list below is interpreted.")
+        @Comment(" - INCLUDE - only mobs matching the list are not ticked.")
+        @Comment(" - EXCLUDE - every mob except those matching the list is not ticked.")
+        public FilterMode filterMode = FilterMode.INCLUDE;
+
+        @Comment("")
+        @Comment("Mobs that should not be ticked. Accepted values:")
+        @Comment(" - ALL - every mob")
+        @Comment(" - a spawn category: MONSTER, ANIMAL, WATER_ANIMAL, WATER_AMBIENT, WATER_UNDERGROUND_CREATURE, AMBIENT, AXOLOTL, MISC")
+        @Comment(" - a concrete entity type: ZOMBIE, COW, VILLAGER, ...")
+        public List<String> entities = new ArrayList<>(List.of("ANIMAL"));
     }
 
     @Comment("")

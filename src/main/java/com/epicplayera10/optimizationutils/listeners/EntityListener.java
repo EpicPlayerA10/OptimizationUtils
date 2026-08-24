@@ -1,18 +1,30 @@
 package com.epicplayera10.optimizationutils.listeners;
 
+import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
 import com.destroystokyo.paper.event.entity.PlayerNaturallySpawnCreaturesEvent;
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import com.destroystokyo.paper.event.entity.PreSpawnerSpawnEvent;
 import com.epicplayera10.optimizationutils.OptimizationUtils;
+import com.epicplayera10.optimizationutils.manager.EntityTickManager;
 import com.epicplayera10.optimizationutils.manager.ThrottleUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.spawner.Spawner;
 
 public class EntityListener implements Listener {
+
+    @EventHandler
+    public void onEntityAddToWorld(EntityAddToWorldEvent event) {
+        if (!(event.getEntity() instanceof Mob mob)) {
+            return;
+        }
+
+        EntityTickManager.onMobAddedToWorld(mob);
+    }
 
     @EventHandler
     public void onCreatureSpawn(CreatureSpawnEvent event) {

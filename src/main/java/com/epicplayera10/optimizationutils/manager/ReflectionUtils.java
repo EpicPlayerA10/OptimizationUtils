@@ -15,6 +15,7 @@ public class ReflectionUtils {
     private static final String CRAFTBUKKIT_PACKAGE = Bukkit.getServer().getClass().getPackage().getName();
 
     private static Method craftWorldGetHandleMethod = null;
+    private static Method craftEntityGetHandleMethod = null;
     private static final Field despawnRangeHorizontalLimit;
     private static final Field despawnRangeVerticalLimit;
 
@@ -42,6 +43,23 @@ public class ReflectionUtils {
 
         try {
             return (ServerLevel) craftWorldGetHandleMethod.invoke(world);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static net.minecraft.world.entity.Entity getNMSEntity(org.bukkit.entity.Entity entity) {
+        if (craftEntityGetHandleMethod == null) {
+            try {
+                craftEntityGetHandleMethod = Class.forName(cbClass("entity.CraftEntity")).getMethod("getHandle");
+                craftEntityGetHandleMethod.setAccessible(true);
+            } catch (ClassNotFoundException | NoSuchMethodException e) {
+                throw new RuntimeException("Failed to get getHandle method from CraftEntity", e);
+            }
+        }
+
+        try {
+            return (net.minecraft.world.entity.Entity) craftEntityGetHandleMethod.invoke(entity);
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
