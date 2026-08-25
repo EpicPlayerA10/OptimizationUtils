@@ -51,7 +51,7 @@ public class PluginConfiguration extends OkaeriConfig {
         @Comment(" - ALL_TICKING - removes the mob from the server's entity tick list, so nothing about it is ticked at all.")
         @Comment("                 Nothing is saved to the mob, everything comes back on its own after a restart.")
         @Comment(" - BUKKIT_AWARE - uses Bukkit's Mob#setAware, so only the mob's AI is skipped (it still falls, burns, despawns, ...).")
-        @Comment("                  Beware: this is saved to the mob (NoAI), so mobs made unaware by other plugins or commands are restored as aware too.")
+        @Comment("                  Beware: this is saved to the mob (Bukkit.Aware), so mobs made unaware by other plugins or commands are restored as aware too.")
         public TickingDisableMode mode = TickingDisableMode.ALL_TICKING;
 
         @Comment("")
