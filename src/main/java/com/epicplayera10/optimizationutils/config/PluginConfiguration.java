@@ -65,7 +65,7 @@ public class PluginConfiguration extends OkaeriConfig {
         @Comment(" - ALL - every mob")
         @Comment(" - type:COW - a concrete entity type (ZOMBIE, COW, VILLAGER, ...)")
         @Comment(" - bukkit_class:Monster - a Bukkit interface from org.bukkit.entity (Mob, Monster, Animals, Raider, ...), case sensitive. May break between versions.")
-        @Comment("   See: https://jd.papermc.io/paper/26.2/org/bukkit/entity/package-summary.html#class-summary")
+        @Comment("   See: https://jd.papermc.io/paper/org/bukkit/entity/package-summary.html#class-summary")
         public List<String> entities = new ArrayList<>(List.of("bukkit_class:Animals"));
     }
 
