@@ -63,9 +63,10 @@ public class PluginConfiguration extends OkaeriConfig {
         @Comment("")
         @Comment("Mobs that should not be ticked. Accepted values:")
         @Comment(" - ALL - every mob")
-        @Comment(" - a spawn category: MONSTER, ANIMAL, WATER_ANIMAL, WATER_AMBIENT, WATER_UNDERGROUND_CREATURE, AMBIENT, AXOLOTL, MISC")
-        @Comment(" - a concrete entity type: ZOMBIE, COW, VILLAGER, ...")
-        public List<String> entities = new ArrayList<>(List.of("ANIMAL"));
+        @Comment(" - type:COW - a concrete entity type (ZOMBIE, COW, VILLAGER, ...)")
+        @Comment(" - bukkit_class:Monster - a Bukkit interface from org.bukkit.entity (Mob, Monster, Animals, Raider, ...), case sensitive. May break between versions.")
+        @Comment("   See: https://jd.papermc.io/paper/26.2/org/bukkit/entity/package-summary.html#class-summary")
+        public List<String> entities = new ArrayList<>(List.of("bukkit_class:Animals"));
     }
 
     @Comment("")
