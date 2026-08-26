@@ -14,27 +14,30 @@ A minecraft plugin with some useful optimization utils (see below).
 
 ## Features
 
-- **Automatic Mobcap** - Automatically prevents mob spawning when server performance drops below configured thresholds (based on MSPT) (see config).
-- **Automatically adjusts mobcaps based on simulation distance** - Automatically adjusts mobcaps based on simulation distance with proper despawn range adjustments following Paper optimization guidelines
-- **Advanced Mob Spawn Control** - Configure mob spawn limits and spawn frequency for different categories (MONSTER, ANIMAL, etc.)
-- **Chunk Entity Analysis** - Analyze loaded chunks to identify areas with the highest entity concentrations (shows top 10 chunks)
-- **Animal Out of Range Cleanup** - Remove animals that are outside specified range from players to reduce server load
+- **Dynamic mobcap** - automatically throttles mob spawning (optionally spawners too) when MSPT exceeds a configurable threshold.
+- **Dynamic random tick speed** - automatically turns random ticks off when MSPT exceeds a configurable threshold.
+- **Disable entity ticking** - stops ticking selected mobs (they stay in the world, but no AI/movement). Two modes: disabled entity ticking entirely, or uses Bukkit's `Mob#setAware`. Mobs can be filtered by entity type or Bukkit class, with include/exclude lists.
+- **Runtime tweaks via commands** - change view distance (globally or per player, persisted), simulation distance, mobcaps, mob spawn frequency and villager tick rates without a restart.
+- **Diagnostics** - analyze which chunks hold the most entities, kill entities/animals far away from players, and a detailed `/ou info` overview.
 
 ## Commands
 
-Base command: `/optimizationutils` (aliases: `/ou`, `/opt`)
+Main command: `/optimizationutils` (aliases: `/ou`, `/opt`)
 
-- `/ou reload` - Reloads the plugin configuration.
-- `/ou info` - Displays server and plugin information.
-- `/ou setsimulationdistance <distance>` - Set simulation distance for all worlds. This also changes spigot and paper configs according to https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#despawn-ranges-notes
-- `/ou setviewdistance <distance> [player]` - Set view distance for all worlds or for a specific player.
-- `/ou resetviewdistance <player>` - Resets view distance for a player to server default.
-- `/ou setspawnlimit <category> <limit>` - Set mob spawn limit (MONSTER, ANIMAL, etc.). Equivalent to `spawn-limits` in `bukkit.yml`. [(ref)](https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#spawn-limits)
-- `/ou setticksperspawn <category> <ticks>` - Set mob spawn frequency. Equivalent to `ticks-per` in `bukkit.yml`. [(ref)](https://paper-chan.moe/paper-optimization/?ref=paper-chan.moe#ticks-per)
-- `/ou analyzechunks` - Shows in which chunk are the most entities.
-- `/ou killoutofrange <entity type> <range>` - Kills specified entities that are out of the given range from the player. This is useful for servers with a lot of entities, as it can help reduce lag.
-
-All these commands only set the values in memory, they do not change the config files. The changes will be lost on server restart.
+| Command | Description |
+|---------|-------------|
+| `/ou info` | Displays server and plugin information (view/simulation distances, entity counts, loaded chunks, tick rates, feature status) |
+| `/ou analyzechunks` | Lists the top 10 loaded chunks with the most entities |
+| `/ou setviewdistance <distance> [player]` | Sets view distance for all worlds, or for a specific player (persisted across restarts) |
+| `/ou resetviewdistance <player>` | Resets a player's view distance to the server default |
+| `/ou setsimulationdistance <distance>` | Sets simulation distance for all worlds while respecting despawn ranges |
+| `/ou setspawnlimit <spawn category> <limit>` | Sets the mobcap for all worlds |
+| `/ou setticksperspawn <spawn category> <ticks>` | Sets mob spawn frequency (ticks between spawn attempts) for all worlds |
+| `/ou setvillagersensortickrate <ticks>` | Sets villager sensor tick rate for all worlds |
+| `/ou setvillagerbehaviortickrate <ticks>` | Sets villager behavior tick rate for all worlds |
+| `/ou killoutofrange <entity type> <range>` | Kills entities of the given type that are out of range of all players |
+| `/ou killanimalsoutofrange <range>` | Kills animals that are out of range of all players |
+| `/ou reload` | Reloads the configuration |
 
 ## Permissions
 
