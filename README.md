@@ -10,7 +10,7 @@ A minecraft plugin with some useful optimization utils (see below).
 - Java 21+
 
 ## Installation
-- [Modrinth](https://modrinth.com/plugin/ia-edit)
+- [Modrinth](https://modrinth.com/plugin/optimizationutils)
 
 ## Features
 
