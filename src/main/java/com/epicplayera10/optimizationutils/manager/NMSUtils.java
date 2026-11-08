@@ -5,6 +5,7 @@ import io.papermc.paper.configuration.type.DespawnRange;
 import io.papermc.paper.configuration.type.number.IntOr;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
+import org.bukkit.craftbukkit.entity.CraftEntityType;
 import net.minecraft.world.entity.MobCategory;
 import org.bukkit.World;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -12,6 +13,8 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import java.util.OptionalInt;
 
 public class NMSUtils {
+    // Resolved via Bukkit because the NMS field moved from EntityType to EntityTypes in 26.x
+    private static final EntityType<?> VILLAGER = CraftEntityType.bukkitToMinecraft(org.bukkit.entity.EntityType.VILLAGER);
 
     /**
      * Sets the simulation distance for the given world and updates related configurations.
@@ -42,12 +45,12 @@ public class NMSUtils {
 
     public static void setNMSVillagerSensorTickRate(World world, int ticks) {
         ServerLevel serverLevel = ReflectionUtils.getNMSWorld(world);
-        serverLevel.paperConfig().tickRates.sensor.put(EntityType.VILLAGER, "secondarypoisensor", ticks);
+        serverLevel.paperConfig().tickRates.sensor.put(VILLAGER, "secondarypoisensor", ticks);
     }
 
     public static void setNMSVillagerBehaviorTickRate(World world, int ticks) {
         ServerLevel serverLevel = ReflectionUtils.getNMSWorld(world);
-        serverLevel.paperConfig().tickRates.sensor.put(EntityType.VILLAGER, "validatenearbypoi", ticks);
+        serverLevel.paperConfig().tickRates.sensor.put(VILLAGER, "validatenearbypoi", ticks);
     }
 
     /**
@@ -55,7 +58,7 @@ public class NMSUtils {
      */
     public static Integer getNMSVillagerSensorTickRate(World world) {
         ServerLevel serverLevel = ReflectionUtils.getNMSWorld(world);
-        return serverLevel.paperConfig().tickRates.sensor.get(EntityType.VILLAGER, "secondarypoisensor");
+        return serverLevel.paperConfig().tickRates.sensor.get(VILLAGER, "secondarypoisensor");
     }
 
     /**
@@ -63,6 +66,6 @@ public class NMSUtils {
      */
     public static Integer getNMSVillagerBehaviorTickRate(World world) {
         ServerLevel serverLevel = ReflectionUtils.getNMSWorld(world);
-        return serverLevel.paperConfig().tickRates.sensor.get(EntityType.VILLAGER, "validatenearbypoi");
+        return serverLevel.paperConfig().tickRates.sensor.get(VILLAGER, "validatenearbypoi");
     }
 }
